@@ -85,7 +85,7 @@ if __name__ == "__main__":
     from scheduler import sched
 
     # Testing
-    sched.add_jobstore(SQLAlchemyJobStore(url=os.getenv('JOB_STORE')), 'default')
-    sched.start()
+    # sched.add_jobstore(SQLAlchemyJobStore(url=os.getenv('JOB_STORE')), 'default')
+    # sched.start()
 
     app.run(host='0.0.0.0', port=os.getenv('PORT'))
