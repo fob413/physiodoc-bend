@@ -1,5 +1,5 @@
 from .SampleResource import SampleResource
 from .AdminAuthenticationResource import AdminAuthenticationResource
-from .AdminPostResource import AdminPostResource
+from .AdminPostResource import AdminPostResource, AdminUnitPostResource
 from .PostResource import UnitPostResource
 from .PublishPostResource import PublishPostResource
