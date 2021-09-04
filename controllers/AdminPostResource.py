@@ -119,3 +119,27 @@ class AdminUnitPostResource(Resource):
             200,
             'Successfully updated post'
         )
+
+    @token_validation
+    def delete(self, post_id):
+        post = Post.find_first(**{
+            'id': post_id,
+            'admin_user_id': g.user_id,
+            'is_published': False
+        }
+                               )
+
+        if not post:
+            return response_message(
+                'fail',
+                404,
+                'Post does not exist'
+            )
+
+        post.delete()
+
+        return response_message(
+            'success',
+            200,
+            'Post deleted successfully'
+        )
