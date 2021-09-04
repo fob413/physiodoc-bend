@@ -33,3 +33,4 @@ class PublishPostResource(Resource):
             'Post has been published successfully',
             post_schema.dump(post)
         )
+

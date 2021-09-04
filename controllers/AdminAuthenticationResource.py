@@ -57,6 +57,6 @@ class AdminAuthenticationResource(Resource):
         return response_message(
             'success',
             200,
-            'Successfully hit this endpoint',
+            'Successfully logged in',
             token
         )
