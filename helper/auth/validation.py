@@ -104,3 +104,12 @@ def token_validation(f):
             # now return wrapped function
             return f(*args, **kwargs)
     return decorated
+
+
+def validate_input_data(data, keys, resource=None):
+    if not set(list(data.keys())) <= set(keys):
+        return response_message(
+            'fail',
+            400,
+            'No invalid field(s) allowed'
+        )
