@@ -4,6 +4,7 @@ from flask import request, g, jsonify
 from flask_jwt import jwt
 
 from helper import response_message
+from models import AdminUser
 
 
 def validate_request():
@@ -96,7 +97,8 @@ def token_validation(f):
             return unauthorized_response
         else:
             # set current user in flask global variable, g
-            g.current_user = payload["id"]
+            g.user_id = payload["id"]
+            g.current_user = AdminUser.get_by_id(g.user_id)
             g.token_info = payload
 
             # now return wrapped function
