@@ -46,3 +46,30 @@ class AdminPostResource(Resource):
             'Successfully created post as draft',
             post_schema.dump(new_post)
         )
+
+
+class AdminUnitPostResource(Resource):
+
+    @token_validation
+    def get(self, post_id):
+        post = Post.find_first(**{
+                'id': post_id,
+                'admin_user_id': g.user_id
+            }
+        )
+
+        if not post:
+            return response_message(
+                'fail',
+                404,
+                'Post does not exist'
+            )
+
+        post_schema = PostSchema()
+
+        return response_message(
+            'success',
+            200,
+            'Post retrieved successfully',
+            post_schema.dump(post)
+        )
