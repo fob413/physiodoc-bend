@@ -6,12 +6,9 @@ from flask_migrate import MigrateCommand
 from logging.handlers import RotatingFileHandler
 from sqlalchemy.exc import SQLAlchemyError
 
-try:
-    from server import create_flask_app
-    from api.models import db, SampleModel
-except ImportError:
-    from .server import create_flask_app
-    from .api.models import db, SampleModel
+from server import create_flask_app
+from models import db
+from default_data import seed_admin_users
 
 environment = os.getenv("FLASK_CONFIG")
 app = create_flask_app(environment)
@@ -53,6 +50,12 @@ def clear_database(prompt=True):
     else:
         print("\n\n\tAborting... Invalid environment '{}'.\n\n"
               .format(environment))
+
+@manager.command
+def seed_admins(prompt=True):
+    seed_admin_users()
+    print(
+        "\n\n\tYay *\(^o^)/* \n\n Your database has been succesfully seeded with admins !!! \n\n\t *\(@^_^@)/* <3 <3 \n\n")
 
 
 @manager.command

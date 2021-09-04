@@ -14,8 +14,5 @@ class Post(ModelMixin):
     is_published = db.Column(db.Boolean(), default=False, nullable=False)
     admin_user_id = db.Column(db.String, db.ForeignKey(AdminUser.id), nullable=False)
 
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
     def __repr__(self):
         return '<AdminUser %r>' % self.id

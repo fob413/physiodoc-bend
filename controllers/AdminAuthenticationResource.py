@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from flask import g, request
 from flask_restful import Resource
@@ -42,18 +43,20 @@ class AdminAuthenticationResource(Resource):
                 'Invalid email or password.'
             )
 
-            # generate token
-            token_date = datetime.datetime.utcnow()
-            payload = {
-                "id": admin_user.id,
-                "stamp": str(token_date),
-                "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1)
-            }
-            _token = jwt.encode(payload, os.getenv("TOKEN_KEY"), algorithm='HS256').decode('utf-8')
+        # generate token
+        token_date = datetime.datetime.utcnow()
+        payload = {
+            "id": admin_user.id,
+            "stamp": str(token_date),
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1)
+        }
+        token = {
+            'token': jwt.encode(payload, os.getenv("TOKEN_KEY"), algorithm='HS256').decode('utf-8')
+        }
 
         return response_message(
             'success',
             200,
             'Successfully hit this endpoint',
-            _token
+            token
         )
