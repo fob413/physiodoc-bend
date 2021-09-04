@@ -1,0 +1,1 @@
+from .seed_admin import seed_admin_users
