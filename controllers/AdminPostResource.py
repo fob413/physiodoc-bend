@@ -2,7 +2,7 @@ from flask import g, request
 from flask_restful import Resource
 from marshmallow import ValidationError
 
-from helper import token_validation, response_message, validate_input_data
+from helper import token_validation, response_message, validate_input_data, get_pagination_data
 from schema import PostSchema
 from models import Post
 
@@ -45,6 +45,33 @@ class AdminPostResource(Resource):
             201,
             'Successfully created post as draft',
             post_schema.dump(new_post)
+        )
+
+    @token_validation
+    def get(self):
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
+        is_published = request.args.get('is_published', 0, type=int)
+
+        posts = Post.query.filter(
+            Post.is_published == bool(is_published),
+            Post.admin_user_id == g.user_id
+        ).paginate(page, per_page)
+
+        post_schema = PostSchema()
+        data = []
+
+        for post in posts.items:
+            data.append(post_schema.dump(post))
+
+        return response_message(
+            'success',
+            200,
+            'Posts retrieved successfully',
+            {
+                'posts': data,
+                'paginate': get_pagination_data(posts)
+            }
         )
 
 
