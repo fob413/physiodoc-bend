@@ -15,4 +15,4 @@ class Post(ModelMixin):
     admin_user_id = db.Column(db.String, db.ForeignKey(AdminUser.id), nullable=False)
 
     def __repr__(self):
-        return '<AdminUser %r>' % self.id
+        return '<Post %r>' % self.id
