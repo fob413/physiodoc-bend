@@ -1,6 +1,8 @@
 from flask_restful import Resource
+from flask import request
+from marshmallow import ValidationError
 
-from helper import response_message
+from helper import response_message, get_pagination_data
 from models import Post
 from schema import PostSchema
 
@@ -28,4 +30,31 @@ class UnitPostResource(Resource):
             200,
             'Post retrieved successfully',
             post_schema.dump(post)
+        )
+
+
+class PostResource(Resource):
+
+    def get(self):
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
+
+        posts = Post.query.filter(
+            Post.is_published==True
+        ).paginate(page, per_page)
+
+        post_schema = PostSchema()
+        data = []
+
+        for post in posts.items:
+            data.append(post_schema.dump(post))
+
+        return response_message(
+            'success',
+            200,
+            'Posts retrieved successfully',
+            {
+                'posts': data,
+                'paginate': get_pagination_data(posts)
+            }
         )
